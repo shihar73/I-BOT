@@ -13,11 +13,15 @@ def login(user, passwd):
     if user_data:
         print(user_data[0])
         if passwd == user_data[0]['password']:
-            login_status['status'] = True
-            return login_status
+            if user_data[0]['status']:
+                login_status['status'] = True
+                return login_status
+            else:
+                login_status['error_msg'] = 'Your account has been disabled. Enable your account before login, please contact admin'
+                login_status['error'] = 'status'
         else:
-            login_status['error_msg'] = 'Please Check Password'
-            login_status['error'] = 'passwd'
+                login_status['error_msg'] = 'Please Check Password'
+                login_status['error'] = 'passwd'
     else:
         login_status['error_msg'] = 'Please Check UserId'
         login_status['error'] = 'user_id'

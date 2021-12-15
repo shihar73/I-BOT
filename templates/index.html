@@ -7,9 +7,9 @@
         <form method="POST" action="/login">
             <div class="field">
                 <div class="control">
-                    <input class="input " type="text" name="user" placeholder="User Name" autofocus="">
+                    <input class="input " type="text" name="user" placeholder="User Name" autofocus="" required>
                 </div>
-                {% with messages  = get_flashed_messages(category_filter=["user_id"]) %}
+                {% with messages = get_flashed_messages(category_filter=["user_id"]) %}
                 {% if messages %}
 
                 {% for message in messages %}
@@ -22,9 +22,9 @@
 
             <div class="field">
                 <div class="control">
-                    <input class="input " type="password" name="password" placeholder="Your Password">
+                    <input class="input " type="password" name="password" placeholder="Your Password" required>
                 </div>
-                {% with messages  = get_flashed_messages(category_filter=["passwd"]) %}
+                {% with messages = get_flashed_messages(category_filter=["passwd"]) %}
                 {% if messages %}
 
                 {% for message in messages %}
@@ -33,11 +33,22 @@
 
                 {% endif %}
                 {% endwith %}
-            </div >
+            </div>
 
             <button class="button is-block is-large is-fullwidth text-white"
                 style="background-color: #0c5abd;">Login</button>
         </form>
     </div>
+    {% with messages = get_flashed_messages(category_filter=["status"]) %}
+    {% if messages %}
+
+    {% for message in messages %}
+    <p class="error_msg" style="color: rgba(223, 26, 26, 0.747);">{{message}}</p>
+    <br>
+    <a href="https://api.whatsapp.com/send?phone=+919656983933&text=Hello,">Contact</a>
+    {% endfor %}
+
+    {% endif %}
+    {% endwith %}
 </div>
 {% endblock %}
