@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Flask Auth Example</title>
+    <title>I-BOT</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/icon.jpg') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -35,6 +36,9 @@
         .logo-text-i{
             font-size: 2rem;
         }
+        .logo-img{
+            width: 3rem;
+        }
     </style>
 
 
@@ -43,11 +47,11 @@
 <body>
     <section class="logo">
         <div class="">
-            <h3 class="logo-text"><span class="logo-text-i">I</span>-BOT</h3> 
+            <h3 class="logo-text"><img class="logo-img" src="{{ url_for('static', filename='img/icon.png') }}" alt=""><span class="logo-text-i"> I</span>-BOT</h3> 
         </div>
     </section>
 
-    <section class="hero is-fullheight">
+    <section class="hero is-fullheight">    
 
 
         <div class="hero-body">
