@@ -1,19 +1,15 @@
-{% block style %} 
-<style>
-    body {
-        background:
-            linear-gradient(rgb(6, 2, 37), transparent),
-            linear-gradient(to top left, rgb(2, 125, 153), transparent),
-            linear-gradient(to top right, #010111, transparent);
-        background-blend-mode: screen;
-    }
-    /* .main-body{
-        
-    } */
-</style>
-{% endblock style %}  
-{% extends "base.html" %}
+{% extends "base.html" %} {% block instaid %}
+<div class="dropdown">
+    <button onclick="myFunction()" class="dropbtn">Instagram</button>
+    <div id="myDropdown" class="dropdown-content">
+        <form class="insta_data" action="">
+            <input class="input " type="text" name="instaid" placeholder="Insta Id" autofocus="" required>
+            <input class="input " type="password" name="password" placeholder="password" autofocus="" required>
+            <button class="button is-block  text-white" style="background-color: #0c5abd;">Login</button>
 
-{% block content %}
-<h1>login seccessfully.......!</h1>
-{% endblock %}
+        </form>
+    </div>
+</div>
+{% endblock %} {% block content %} <br>
+<br>
+<a href="/logout">logout</a> {% endblock %}
