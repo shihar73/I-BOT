@@ -1,15 +1,63 @@
-{% extends "base.html" %} {% block instaid %}
-<div class="dropdown">
-    <button onclick="myFunction()" class="dropbtn">Instagram</button>
-    <div id="myDropdown" class="dropdown-content">
-        <form class="insta_data" action="">
-            <input class="input " type="text" name="instaid" placeholder="Insta Id" autofocus="" required>
-            <input class="input " type="password" name="password" placeholder="password" autofocus="" required>
-            <button class="button is-block  text-white" style="background-color: #0c5abd;">Login</button>
+{% extends "base.html" %}
+<section class="hero is-fullheight">
+    <div class="hero-body">
+{% block logout%}
+<a href="/logout">logout</a>
+{% endblock %}
 
-        </form>
+
+
+
+{% block main %}
+<section class="first_section hero is-fullheight row align-items-cente" >
+
+    
+    <form action="">
+        <div class="col">
+            <h4>Hash Tags</h4>
+            <p>xxckkkkdskdsknjjjjjnhtd frfuytftfhsdish sydgsuyh</p>
+            <textarea class="tags" name="tags" id="tags" cols="30" rows="10"></textarea>
+        </div>
+        <br><br><br>
+        <div class="col">
+            <h4>Hash Tags</h4>
+            <p>xxckkkkdskdsknjjjjjnhtd frfuytftfhsdish sydgsuyh</p>
+            <textarea class="tags" name="tags" id="tags" cols="30" rows="10"></textarea>
+        </div>
+        <br><br><br>
+        <div class="col first_btn">
+            <button class="button is-block  text-white" style="background-color: #0c5abd;">Login</button>
+        </div>
+    </form>
+
+
+</section>
+
+<section class="second_section hero is-fullheight">
+
+
+    <div class="hero-body">
+        <div class="dropdown">
+            <button onclick="myFunction()" class="dropbtn">Instagram</button>
+            <div id="myDropdown" class="dropdown-content">
+                <form class="insta_data" action="">
+                    <p>ljdnfgjsnsjfosnfuosifjshfousnfisuhfsbnosb iosofnsouhfsejofhiuefhwshfjiu</p>
+                    <p>ljdnfgjsnsjfosnfuosifjshfousnfisuhfsbnosb iosofnsouhfsejofhiuefhwshfjiu</p>
+                    <input class="input " type="text" name="instaid" placeholder="Insta Id" autofocus="" required>
+                    <input class="input " type="password" name="password" placeholder="password" autofocus="" required>
+                    <button class="button is-block  text-white" style="background-color: #0c5abd;">Login</button>
+
+                </form>
+            </div>
+        </div>
+        <div class="container has-text-centered">
+            <br>
+            <br>
+            <p>dgadsfdfgbzdfgzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzfgdgrgergehbsfhushfshfuoheduo</p>
+        </div>
     </div>
-</div>
-{% endblock %} {% block content %} <br>
-<br>
-<a href="/logout">logout</a> {% endblock %}
+</section>
+
+{% endblock %}
+
+</section>
