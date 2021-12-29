@@ -89,6 +89,9 @@ body {
     margin-left: -100%;
 }
 .dropdown-content_insat{
+    z-index: 1;
+}
+.dropdown-content_logs{
     z-index: 2;
 }
 
@@ -113,7 +116,6 @@ body {
 
 .show {
     display: block;
-    z-index: 1;
 }
 
 .insta_data {
