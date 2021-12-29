@@ -1,54 +1,60 @@
 {% extends "base.html" %}
+{% block main %}
+<section class="hero is-fullheight">
 
-{% block content %}
-<div class="column is-4 is-offset-4">
-    <h3 class="title ">Login</h3>
-    <div class="box">
-        <form method="POST" action="/login">
-            <div class="field">
-                <div class="control">
-                    <input class="input " type="text" name="user" placeholder="User Name" autofocus="" required>
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div class="column is-4 is-offset-4">
+                <h3 class="title ">Login</h3>
+                <div class="box">
+                    <form method="POST" action="/login">
+                        <div class="field">
+                            <div class="control">
+                                <input class="input " type="text" name="user" placeholder="User Name" autofocus="" required>
+                            </div>
+                            {% with messages = get_flashed_messages(category_filter=["user_id"]) %}
+                            {% if messages %}
+            
+                            {% for message in messages %}
+                            <p class="error_msg" style="color: rgba(223, 26, 26, 0.747);">{{message}}</p>
+                            {% endfor %}
+            
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+            
+                        <div class="field">
+                            <div class="control">
+                                <input class="input " type="password" name="password" placeholder="Your Password" required>
+                            </div>
+                            {% with messages = get_flashed_messages(category_filter=["passwd"]) %}
+                            {% if messages %}
+            
+                            {% for message in messages %}
+                            <p class="error_msg" style="color: rgba(223, 26, 26, 0.747);">{{message}}</p>
+                            {% endfor %}
+            
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+            
+                        <button class="button is-block is-large is-fullwidth text-white"
+                            style="background-color: #0c5abd;">Login</button>
+                    </form>
                 </div>
-                {% with messages = get_flashed_messages(category_filter=["user_id"]) %}
+                {% with messages = get_flashed_messages(category_filter=["status"]) %}
                 {% if messages %}
-
+            
                 {% for message in messages %}
                 <p class="error_msg" style="color: rgba(223, 26, 26, 0.747);">{{message}}</p>
+                <br>
+                <a href="https://api.whatsapp.com/send?phone=+919656983933&text=Hello,">Contact</a>
                 {% endfor %}
-
+                
                 {% endif %}
                 {% endwith %}
             </div>
-
-            <div class="field">
-                <div class="control">
-                    <input class="input " type="password" name="password" placeholder="Your Password" required>
-                </div>
-                {% with messages = get_flashed_messages(category_filter=["passwd"]) %}
-                {% if messages %}
-
-                {% for message in messages %}
-                <p class="error_msg" style="color: rgba(223, 26, 26, 0.747);">{{message}}</p>
-                {% endfor %}
-
-                {% endif %}
-                {% endwith %}
-            </div>
-
-            <button class="button is-block is-large is-fullwidth text-white"
-                style="background-color: #0c5abd;">Login</button>
-        </form>
+        </div>
     </div>
-    {% with messages = get_flashed_messages(category_filter=["status"]) %}
-    {% if messages %}
-
-    {% for message in messages %}
-    <p class="error_msg" style="color: rgba(223, 26, 26, 0.747);">{{message}}</p>
-    <br>
-    <a href="https://api.whatsapp.com/send?phone=+919656983933&text=Hello,">Contact</a>
-    {% endfor %}
-
-    {% endif %}
-    {% endwith %}
-</div>
+</section>
 {% endblock %}
