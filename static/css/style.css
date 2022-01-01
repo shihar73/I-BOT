@@ -11,6 +11,7 @@ body {
     padding: 1rem;
     margin-left: 1rem;
     z-index: 3;
+    background-color: #c4c4c47a;
 }
 
 .logo-text {
@@ -38,9 +39,19 @@ body {
     font-size: 16px;
     border: none;
     cursor: pointer;
+    border-radius: 6px;
 }
 .dropbtn_logs {
     background-color: #2046b9ba;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.btnactivate{
+    background-color: #2a8500e5;
     color: white;
     padding: 10px;
     font-size: 16px;
@@ -55,9 +66,16 @@ body {
     padding: 11px;
     font-size: 17px;
 }
-.dropbtn_insta:hover,
-.dropbtn_insta:focus {
+.dropbtn_insta:hover{
     background-color: #38749cd7;
+}
+.btnactivate:hover{
+    background-color: #2a8500e5;
+    color: white;
+    padding: 11px;
+    font-size: 16.5px;
+    border: none;
+    cursor: pointer;
 }
 
 
@@ -86,13 +104,15 @@ body {
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     margin-top: .5rem;
-    margin-left: -100%;
+    
 }
-.dropdown-content_insat{
+.dropdown-content_insta{
     z-index: 1;
+    margin-left: -100%;
 }
 .dropdown-content_logs{
     z-index: 2;
+    margin-left: -100%;
 }
 
 
@@ -171,3 +191,93 @@ body {
 .log_div::-webkit-scrollbar {
     display: none; /* for Chrome, Safari, and Opera */
 }
+
+
+/* mobile style */
+@media only screen and (max-width: 810px) {
+    .login_section{
+        padding-top: 6rem;
+    }
+    .logout {
+        margin-right: 1.5rem;
+        position: inherit;
+        font-weight: bold;
+        top: 3.5%;
+        right: -1%;
+    }
+    .dropbtn_logs {
+        background-color: #2046b9ba;
+        color: white;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 20px;
+        width: 5rem;
+    }
+    .dropdown_insat {
+        position: fixed;
+        left: 2%;
+        top: 6rem;
+        display: inline-block;
+    }
+    .dropbtn_insta {
+        background-color: #207cb9;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 30px;
+    }
+    .dropdown_logs {
+        position: absolute;
+        right: 8%;
+        top: 122%;
+        display: inline-block;
+    }
+    .dropdown_logs {
+        position: absolute;
+        right: 8%;
+        top: 122%;
+        display: inline-block;
+    }
+    .dropdown-content_logs {
+        margin-left: -202%;
+    }
+    .dropdown-content_insta {
+        margin-left: 0%;
+        
+    }
+    .first_section {
+        float: left;
+        padding-top: 6rem;
+        padding-left: 0%;
+        padding-bottom: 0%;
+        width: 101%;
+    }
+    .hero.is-fullheight .hero-body, .hero.is-fullheight-with-navbar .hero-body, .hero.is-halfheight .hero-body {
+        align-items: center;
+        display: flow-root;
+    }
+    .hero-body {
+        flex-grow: 1;
+        flex-shrink: 0;
+        padding: 3rem 1rem;
+    }
+    .has-text-centered p{
+        text-align: left;
+    }
+    .container{
+        padding-left: 10px;
+    }
+    .second_section .hero-body{
+        padding: 0%;
+    }
+    .dropdown_insat {
+        z-index: 2;
+    }
+    .tags {
+        width: 160%;
+    }
+  }

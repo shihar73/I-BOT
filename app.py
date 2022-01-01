@@ -54,7 +54,10 @@ def login():
 @login_required
 def home():
     print(session)
-   
+    data = session['user']
+    if data['bot'] == False:
+        flash("true","bot")
+
     return render_template('home.html')
 
 
