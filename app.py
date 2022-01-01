@@ -1,11 +1,13 @@
 from flask import *
 from functools import wraps
 from helpers import db_user_querys as db_user
+from insta.bot import Bot
 from datetime import timedelta
 
 
 app = Flask(__name__)
 app.secret_key = b'|\xe5YHYU\xadY\x9c\xf2%\xc1\xe0\xb5\xf4W'
+
 
 
 @app.before_request
@@ -55,10 +57,8 @@ def login():
 def home():
     print(session)
     data = session['user']
-    if data['bot'] == False:
-        flash("true","bot")
-
-    return render_template('home.html')
+    # data['bot'] = True
+    return render_template('home.html', data = data)
 
 
 @app.route('/logout')
@@ -68,6 +68,21 @@ def logout():
     return redirect(url_for("index"))
 
 
+@app.route('/instalogin', methods=['POST'])
+@login_required
+def insatlogin():
+
+    insta_id = request.form["instaid"] 
+    passwd = request.form["password"]
+    bot = Bot(insta_id,passwd)
+    data = bot.login()
+    if data:
+        print(data)
+        flash(data,'insat_login')
+        
+    bot.exit()
+    print(insta_id,passwd)
+    return redirect(url_for("home"))
 
 
 
