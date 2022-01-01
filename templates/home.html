@@ -81,27 +81,45 @@
                 <div class="dropdown dropdown_insat">
                     <button onclick="myFunction()" class="dropbtn dropbtn_insta">Instagram</button>
                     <div id="myDropdown" class="dropdown-content dropdown-content_insta">
-                        <form class="insta_data" action="" method="post">
+                        <form class="insta_data" action="/instalogin" method="post">
                             <p>ljdnfgjsn sjfosn fuos ifjshfou snfisuhf sbnosb iosof nsouh fsejof hiue fhwshfjiu</p>
                             <p>ljdnfgjsnsj fosnfuosi fjshfousnfisu hfsbnosb iosofnso uhfsej ofhiue fhwshfjiu</p>
                             <input class="input " type="text" name="instaid" placeholder="Insta Id" autofocus=""
                                 required>
                             <input class="input " type="password" name="password" placeholder="password" autofocus=""
                                 required>
-                            <button class="button is-block  text-white"
-                                style="background-color: #0c5abd;">Login</button>
+                            <button id="insta-login-btn" class="button is-block  text-white insta-login-btn"
+                                onclick="loadingBtn()"><span class="button__text">Login</span></button>
 
+                            {% with messages = get_flashed_messages(category_filter=["insat_login"]) %}
+                            {% if messages %}
+
+                            {% for message in messages %}
+                            <p class="error_msg" style="color: rgba(223, 26, 26, 0.747);">{{message}}</p>
+                            {% endfor %}
+
+                            {% endif %}
+                            {% endwith %}
                         </form>
                     </div>
                 </div>
                 <div class="container has-text-centered">
-                    <p>dgadsfd fgbzdfgz zzzzzzzzzzzzz zzzzzzzzzzzzzz zzzzzfgdg rgergehbsfhus hfshfuohed uo</p>
-                    {% with messages = get_flashed_messages(category_filter=["bot"]) %}
-                    {% if messages %}
+                    <p>dgadsfd fgbzdfgz zzzzzzzzzzzzz zzzzzzzzzzzzzz zzzzzfgdg rgergehbsfhus hfshfuohed uo
+                        {{data.user_id}}</p>
+                    {% if data.bot %}
+                    <button class="button btnactivate">Activated</button>
+                    {% else %}
                     <button class="button btnactivate">Activate</button>
                     {% endif %}
-                    {% endwith %}
+
+                    <!-- <script>
+                        function test_func(data) {
+                            console.log(data);
+                        }
+                        test_func({{ data|safe }})
+                    </script> -->
                 </div>
+
             </div>
         </section>
     </div>

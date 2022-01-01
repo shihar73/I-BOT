@@ -21,3 +21,12 @@ window.onclick = function(event) {
         }
     }
 }
+
+
+// loading btn
+function loadingBtn() {
+    console.log('sdfdgdghdhdhdfhdhdhddh');
+    document.getElementById("insta-login-btn").classList.add('button--loading');
+    document.getElementById("insta-login-btn").disabled = true;
+    
+}
