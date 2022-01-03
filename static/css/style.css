@@ -134,12 +134,17 @@ body {
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 
+.insta_show{
+    display: none;
+}
+
 .show {
     display: block;
 }
 
 .insta_data {
     margin: 2rem;
+    width: 16rem;
 }
 
 .insta_data input {

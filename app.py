@@ -76,14 +76,15 @@ def insatlogin():
     passwd = request.form["password"]
     bot = Bot(insta_id,passwd)
     data = bot.login()
+    data = False
     if data:
         print(data)
         bot.exit()
         return jsonify(status = False, msg = data)
-        
-    bot.exit()
-    print(insta_id,passwd)
-    return jsonify(status = True, msg = "Insta AC Saved") 
+    else:
+        bot.exit()
+        session["insat_ac"] = True
+        return jsonify(status = True, msg = f"Your {insta_id} insta account has been added successfully")
 
 
 

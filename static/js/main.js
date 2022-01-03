@@ -40,7 +40,9 @@ $(document).on('submit', '#insta_data', function (e) {
             document.getElementById("insta-login-btn").classList.remove('button--loading');
             document.getElementById("insta-login-btn").disabled = false;
             if(response.status){
-                document.getElementById("insta_sc_msg").innerHTML = response.msg;
+                data = "<p style='color: rgba(0, 168, 8, 0.747); position: relative;'>"+response.msg+"<br><span style='font-size: 4rem;'>&#10003;</span> </p>"
+                document.getElementById("insta_sc_msg").innerHTML = data;
+                document.getElementById("insta_form").classList.add('insta_show');
             }else{
                 document.getElementById("insta_er_msg").innerHTML = response.msg;
             }
@@ -48,3 +50,15 @@ $(document).on('submit', '#insta_data', function (e) {
         }
     })
 });
+
+
+function instaForme(){
+    document.getElementById("insta_content").classList.add('insta_show');
+    document.getElementById("insta_form").classList.remove('insta_show');
+}
+
+function instaContent(){
+
+    document.getElementById("insta_content").classList.remove('insta_show');
+    document.getElementById("insta_form").classList.add('insta_show');
+}
