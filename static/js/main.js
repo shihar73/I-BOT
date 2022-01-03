@@ -9,7 +9,7 @@ function myFunctionLogs() {
 }
 
 // Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (!event.target.matches('.dropbtn')) {
         var dropdowns = document.getElementsByClassName("dropdown-content");
         var i;
@@ -23,10 +23,28 @@ window.onclick = function(event) {
 }
 
 
-// loading btn
-function loadingBtn() {
-    console.log('sdfdgdghdhdhdfhdhdhddh');
+
+
+$(document).on('submit', '#insta_data', function (e) {
+    console.log('hello');
+    e.preventDefault();
     document.getElementById("insta-login-btn").classList.add('button--loading');
     document.getElementById("insta-login-btn").disabled = true;
-    
-}
+    var dataString = $(this).serialize();
+    console.log('data', dataString);
+    $.ajax({
+        type: 'POST',
+        url: '/instalogin',
+        data: dataString,
+        success: function (response) {
+            document.getElementById("insta-login-btn").classList.remove('button--loading');
+            document.getElementById("insta-login-btn").disabled = false;
+            if(response.status){
+                document.getElementById("insta_sc_msg").innerHTML = response.msg;
+            }else{
+                document.getElementById("insta_er_msg").innerHTML = response.msg;
+            }
+            console.log(response.msg);
+        }
+    })
+});

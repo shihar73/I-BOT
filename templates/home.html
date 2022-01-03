@@ -81,7 +81,7 @@
                 <div class="dropdown dropdown_insat">
                     <button onclick="myFunction()" class="dropbtn dropbtn_insta">Instagram</button>
                     <div id="myDropdown" class="dropdown-content dropdown-content_insta">
-                        <form class="insta_data" action="/instalogin" method="post">
+                        <form class="insta_data" id="insta_data">
                             <p>ljdnfgjsn sjfosn fuos ifjshfou snfisuhf sbnosb iosof nsouh fsejof hiue fhwshfjiu</p>
                             <p>ljdnfgjsnsj fosnfuosi fjshfousnfisu hfsbnosb iosofnso uhfsej ofhiue fhwshfjiu</p>
                             <input class="input " type="text" name="instaid" placeholder="Insta Id" autofocus=""
@@ -89,17 +89,11 @@
                             <input class="input " type="password" name="password" placeholder="password" autofocus=""
                                 required>
                             <button id="insta-login-btn" class="button is-block  text-white insta-login-btn"
-                                onclick="loadingBtn()"><span class="button__text">Login</span></button>
+                                 type="submit"><span class="button__text">Login</span></button>
 
-                            {% with messages = get_flashed_messages(category_filter=["insat_login"]) %}
-                            {% if messages %}
-
-                            {% for message in messages %}
-                            <p class="error_msg" style="color: rgba(223, 26, 26, 0.747);">{{message}}</p>
-                            {% endfor %}
-
-                            {% endif %}
-                            {% endwith %}
+                                <p id="insta_er_msg" class="insta_er_msg" style="color: rgba(223, 26, 26, 0.747); left: 20%; position: relative;"></p>
+                                <p id="insta_sc_msg" class="insta_sc_msg" style="color: rgba(0, 168, 8, 0.747); left: 20%; position: relative;"></p>
+                            
                         </form>
                     </div>
                 </div>

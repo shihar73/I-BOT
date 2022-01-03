@@ -13,7 +13,7 @@ app.secret_key = b'|\xe5YHYU\xadY\x9c\xf2%\xc1\xe0\xb5\xf4W'
 @app.before_request
 def make_session_permanent():
     session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=600)
+    app.permanent_session_lifetime = timedelta(minutes=300)
 
 
 def login_required(f):
@@ -78,11 +78,12 @@ def insatlogin():
     data = bot.login()
     if data:
         print(data)
-        flash(data,'insat_login')
+        bot.exit()
+        return jsonify(status = False, msg = data)
         
     bot.exit()
     print(insta_id,passwd)
-    return redirect(url_for("home"))
+    return jsonify(status = True, msg = "Insta AC Saved") 
 
 
 
