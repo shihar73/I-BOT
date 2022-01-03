@@ -15,6 +15,9 @@ def login(user, passwd):
         if passwd == user_data[0]["password"]:
             if user_data[0]["status"]:
                 del user_data[0]["password"]
+                if user_data[0]["insta_ac"]:
+                    del user_data[0]["insta"]["passwd"]
+
                 login_status["status"] = True
                 login_status["user_data"] = user_data[0]
                 return login_status
@@ -29,3 +32,17 @@ def login(user, passwd):
         login_status["error"] = "user_id"
 
     return login_status 
+
+
+def insta_ac_add(insta, user):
+    print(insta, user)
+    id ={
+        "_id": user['_id']
+    }
+    data = {"$set": {
+        "insta_ac":True,
+        "insta":insta
+    }
+    }
+    col.update_one(id,data)
+    return

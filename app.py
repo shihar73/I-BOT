@@ -41,10 +41,10 @@ def login():
     user = request.form["user"] 
     passwd = request.form["password"]
     data = db_user.login(user, passwd)
-    print(data)
     if data['status']:
         session['logged_in'] = True
         session['user'] = data['user_data']
+        print(session['user'])
         return redirect(url_for("home"))
         
     else:
@@ -74,16 +74,24 @@ def insatlogin():
 
     insta_id = request.form["instaid"] 
     passwd = request.form["password"]
+    insta ={
+        "insta_id" : insta_id, 
+        "passwd" : passwd
+    }
     bot = Bot(insta_id,passwd)
     data = bot.login()
-    data = False
     if data:
         print(data)
         bot.exit()
         return jsonify(status = False, msg = data)
     else:
         bot.exit()
-        session["insat_ac"] = True
+        session['user']["insat_ac"] = True
+        session['user']["insta"] = {
+        "insta_id" : insta_id
+    }
+        user = session['user']
+        db_user.insta_ac_add(insta,user)
         return jsonify(status = True, msg = f"Your {insta_id} insta account has been added successfully")
 
 
