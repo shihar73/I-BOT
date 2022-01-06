@@ -69,10 +69,12 @@
                             <br>  min: 5 tags</p>
                         <input type="text" value="{% for comment in data.comments %}{{comment}},{% endfor %}" data-role="tagsinput" name="comments" required></input>
                     </div>
-                    <br><br><br>
+                    <br><br>
+                    <div id="data_sc_msg" style="text-align: center;">
+                    </div>
                     <div class="col first_btn">
-                        <button type="submit" class="button is-block  text-white"
-                            style="background-color: #0c5abd; left: 45%; width: 6rem; font-size: 1rem;">Set</button>
+                        <button id="data_btn" type="submit" class="button is-block  text-white"
+                            style="background-color: #0c5abd; left: 45%; width: 6rem; font-size: 1rem;"><span class="button__text">Set</span></button>
                     </div>
                 </form>
             </div>
@@ -130,14 +132,6 @@
                     {% else %}
                     <button class="button btnactivate">Activate</button>
                     {% endif %}
-
-                    <!-- <script>
-                        function test_func(data) {
-                            console.log(data);
-                        }
-                        test_func({{ data|safe }})
-                    </script> -->
-                </div>
 
             </div>
         </section>

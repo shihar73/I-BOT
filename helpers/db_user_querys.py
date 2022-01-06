@@ -9,17 +9,16 @@ def login(user, passwd):
     login_status = {
         "status":False
     }
-    user_data = [i for i in col.find({"user_id":user})]
+    user_data = col.find_one({"user_id":user})
     if user_data:
-        print(user_data[0])
-        if passwd == user_data[0]["password"]:
-            if user_data[0]["status"]:
-                del user_data[0]["password"]
-                if user_data[0]["insta_ac"]:
-                    del user_data[0]["insta"]["passwd"]
+        if passwd == user_data["password"]:
+            if user_data["status"]:
+                del user_data["password"]
+                if user_data["insta_ac"]:
+                    del user_data["insta"]["passwd"]
 
                 login_status["status"] = True
-                login_status["user_data"] = user_data[0]
+                login_status["user_data"] = user_data
                 return login_status
             else:
                 login_status["error_msg"] = "Your account has been disabled. Enable your account before login, please contact admin"
@@ -36,7 +35,10 @@ def login(user, passwd):
 
 def userdata(user):
     data = col.find_one({"_id": user['_id']})
-    print(data)
+    print(data["password"])
+    del data["password"]
+    if data["insta_ac"]:
+        del data["insta"]["passwd"]
     return data
 
 
@@ -49,6 +51,16 @@ def insta_ac_add(insta, user):
         "insta_ac":True,
         "insta":insta
     }
+    }
+    col.update_one(id,data)
+    return
+
+
+def update_data(data, user):
+    id ={
+        "_id": user['_id']
+    }
+    data = {"$set": data
     }
     col.update_one(id,data)
     return

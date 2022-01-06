@@ -1,3 +1,4 @@
+from logging import fatal
 from flask import *
 from functools import wraps
 from helpers import db_user_querys as db_user
@@ -97,10 +98,16 @@ def insatlogin():
 @app.route('/data', methods=['POST'])
 @login_required
 def data():
-    tags = request.form["tags"].replace(" ", "")
-    comments = request.form["comments"]
-    print(tags, comments)
-    return jsonify(status = True, msg = f"Your data has been added successfully")
+    data = {}
+    data["tags"] = request.form["tags"].replace(" ", "").split(",")
+    data["comments"] = request.form["comments"].split(",")
+    print(len(data["tags"]), len(data["comments"]))
+    if len(data["tags"]) >= 5 and len(data["comments"]) >= 5:
+        print('add in database')
+        db_user.update_data(data, session['user'])
+        return jsonify(status = True, msg = f"Your data has been added successfully")
+    else:
+        return jsonify(status = False, msg = f"Please Keep Minimum")
 
 
 
