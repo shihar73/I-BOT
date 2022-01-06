@@ -49,32 +49,37 @@
             <div class="hero-body">
                 <form id="data">
                     <div class="col">
-
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                        <!-- <h5>Note</h3> -->
+                        <p>If You want to change the password. Click <a href=""> Hear</a></p>
                     </div>
                     <br>
                     <div class="">
                         <h4>Hashtags</h4>
-                        <p>Please add some hashtags or Keep default hashtags <br>NB: Don't use symbols 
-                        <br>  min: 5 tags</p>
-                        
-                        <input type="text" value="{% for tag in data.tags %}{{tag}},{% endfor %}" data-role="tagsinput" name="tags" required></input>
-                        
+                        <p>Please add some hashtags or Keep default hashtags <br>NB: Don't use symbols
+                            <br> min: 5 tags
+                        </p>
+
+                        <input type="text" value="{% for tag in data.tags %}{{tag}},{% endfor %}" data-role="tagsinput"
+                            name="tags" required></input>
+
 
                     </div>
                     <br><br><br>
                     <div class="col">
                         <h4>Comments</h4>
                         <p>Please add some Comments or Keep default Comments
-                            <br>  min: 5 tags</p>
-                        <input type="text" value="{% for comment in data.comments %}{{comment}},{% endfor %}" data-role="tagsinput" name="comments" required></input>
+                            <br> min: 5 tags
+                        </p>
+                        <input type="text" value="{% for comment in data.comments %}{{comment}},{% endfor %}"
+                            data-role="tagsinput" name="comments" required></input>
                     </div>
                     <br><br>
                     <div id="data_sc_msg" style="text-align: center;">
                     </div>
                     <div class="col first_btn">
                         <button id="data_btn" type="submit" class="button is-block  text-white"
-                            style="background-color: #0c5abd; left: 45%; width: 6rem; font-size: 1rem;"><span class="button__text">Set</span></button>
+                            style="background-color: #0c5abd; left: 45%; width: 6rem; font-size: 1rem;"><span
+                                class="button__text">Set</span></button>
                     </div>
                 </form>
             </div>
@@ -124,16 +129,15 @@
                         </form>
                     </div>
                 </div>
-                <div class="container has-text-centered">
-                    <p>dgadsfd fgbzdfgz zzzzzzzzzzzzz zzzzzzzzzzzzzz zzzzzfgdg rgergehbsfhus hfshfuohed uo
-                        {{data.user_id}}</p>
+                <form id="activate" class="container has-text-centered">
+                    <p>Please activate your bot. If the button disabled the bot already activated</p>
                     {% if data.bot %}
-                    <button class="button btnactivate">Activated</button>
+                    <button  class="button btnactivate" disabled >Activated</button>
                     {% else %}
-                    <button class="button btnactivate">Activate</button>
+                    <button id="activate_btn" class="button btnactivate">Activate</button>
                     {% endif %}
-
-            </div>
+                    <div id="activate_msg"></div>
+                </form>
         </section>
     </div>
 </section>

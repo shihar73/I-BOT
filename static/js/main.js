@@ -91,3 +91,24 @@ $(document).on('submit', '#data', function (e) {
     })
 });
 
+
+$(document).on('submit', '#activate', function (e) {
+    e.preventDefault();
+    
+    $.ajax({
+        type: 'POST',
+        url: '/activate',
+        success: function (response) {
+            if(response.status){
+                document.getElementById("activate_btn").disabled = true;
+                data = "<p style='color: rgb(0, 168, 8); position: relative;'>"+response.msg+"</p>"
+                document.getElementById("activate_msg").innerHTML = data;;
+            }else{
+                data = "<p style='color: rgb(217, 12, 12); position: relative;'>"+response.msg+"</p>"
+                document.getElementById("activate_msg").innerHTML = data;;
+            }
+            
+            
+        }
+    })
+});

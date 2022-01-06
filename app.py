@@ -111,5 +111,17 @@ def data():
 
 
 
+@app.route('/activate', methods=['POST'])
+@login_required
+def activate():
+    if session['user']['insta_ac']:
+        return jsonify(status = True, msg = f"Bot Activated seccessfully")
+        
+    else:
+        return jsonify(status = False, msg = f"Please Add an Instagram account")
+
+
+
+
 if __name__ == "__main__":
     app.run()
