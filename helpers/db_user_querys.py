@@ -34,6 +34,12 @@ def login(user, passwd):
     return login_status 
 
 
+def userdata(user):
+    data = col.find_one({"_id": user['_id']})
+    print(data)
+    return data
+
+
 def insta_ac_add(insta, user):
     print(insta, user)
     id ={

@@ -47,27 +47,32 @@
 
         <section class="first_section hero is-fullheight row align-items-cente">
             <div class="hero-body">
-                <form action="" method="post">
+                <form id="data">
                     <div class="col">
 
                         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                     </div>
                     <br>
-                    <div class="col">
-                        <h4>Hash Tags</h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                        <textarea class="tags" name="tags" id="tags" cols="30" rows="10"></textarea>
+                    <div class="">
+                        <h4>Hashtags</h4>
+                        <p>Please add some hashtags or Keep default hashtags <br>NB: Don't use symbols 
+                        <br>  min: 5 tags</p>
+                        
+                        <input type="text" value="{% for tag in data.tags %}{{tag}},{% endfor %}" data-role="tagsinput" name="tags" required></input>
+                        
+
                     </div>
                     <br><br><br>
                     <div class="col">
-                        <h4>comments</h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                        <textarea class="tags" name="comments" id="comments" cols="30" rows="10"></textarea>
+                        <h4>Comments</h4>
+                        <p>Please add some Comments or Keep default Comments
+                            <br>  min: 5 tags</p>
+                        <input type="text" value="{% for comment in data.comments %}{{comment}},{% endfor %}" data-role="tagsinput" name="comments" required></input>
                     </div>
                     <br><br><br>
                     <div class="col first_btn">
-                        <button class="button is-block  text-white"
-                            style="background-color: #0c5abd; left: 45%; width: 4rem;">Set</button>
+                        <button type="submit" class="button is-block  text-white"
+                            style="background-color: #0c5abd; left: 45%; width: 6rem; font-size: 1rem;">Set</button>
                     </div>
                 </form>
             </div>
@@ -84,7 +89,7 @@
                         <form id="insta_data">
                             <div id="insta_form" class="insta_data insta_show">
                                 <a onclick="instaContent()" style="color: #207cb9;">Back</a>
-                                <p>Please add your Instagram username and password</p>
+                                <p>Please add your Instagram username and password and check login</p>
                                 <input class="input " type="text" name="instaid" placeholder="Insta Id" autofocus=""
                                     required>
                                 <input class="input " type="password" name="password" placeholder="password"
@@ -97,19 +102,22 @@
                             </div>
 
                             <div class="insta_data" id="insta_content">
-                                {% if data.insta_ac  %}
-                                <p class="">Your bot connected with {{data.insta.insta_id}} insta account.<br> Please click change if you want to change
+                                {% if data.insta_ac %}
+                                <p class="">Your bot connected with {{data.insta.insta_id}} insta account.<br> Please
+                                    click change if you want to change
                                 </p>
-                                <a onclick="instaForme()" style="color: #207cb9;" class="">Change</a> 
+                                <a onclick="instaForme()" style="color: #207cb9;" class="">Change</a>
                                 {% else %}
-                                <p class="insta_content-p2">An insta account is required for your bot to work so you need to add an insta account
-                                <br> add an Instagram account</p>
+                                <p class="insta_content-p2">An insta account is required for your bot to work so you
+                                    need to add an insta account
+                                    <br> add an Instagram account
+                                </p>
                                 <a onclick="instaForme()" style="color: #207cb9;" class="insta_content-p2">Add</a>
                                 {% endif %}
                             </div>
 
                             <div class="insta_data" id="insta_sc_msg" style="text-align: center;">
-                                
+
                             </div>
                         </form>
                     </div>

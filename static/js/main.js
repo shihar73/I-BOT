@@ -62,3 +62,76 @@ function instaContent(){
     document.getElementById("insta_content").classList.remove('insta_show');
     document.getElementById("insta_form").classList.add('insta_show');
 }
+
+// var citynames = new Bloodhound({
+//     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+//     queryTokenizer: Bloodhound.tokenizers.whitespace,
+//     prefetch: {
+//       url: 'assets/citynames.json',
+//       filter: function(list) {
+//         return $.map(list, function(cityname) {
+//           return { name: cityname }; });
+//       }
+//     }
+//   });
+//   citynames.initialize();
+  
+//   $('input').tagsinput({
+//     typeaheadjs: {
+//       name: 'citynames',
+//       displayKey: 'name',
+//       valueKey: 'name',
+//       source: citynames.ttAdapter()
+//     }
+//   });
+
+$(document).on('submit', '#data', function (e) {
+    console.log('hello');
+    e.preventDefault();
+
+    var dataString = $(this).serialize();
+
+    console.log('data', dataString);
+
+    $.ajax({
+        type: 'POST',
+        url: '/data',
+        data: dataString,
+        success: function (response) {
+            console.log(response.msg);
+        }
+    })
+});
+
+
+// $("#data").validate({
+    
+//     rules:{
+//         name:"required",
+//         email:{required: true},
+//         mobile:{required : true,minlength:10},
+    
+//     },
+    
+//     messages: {
+//         name:"Please fill name",
+//         email:{email:"Enter Valid Email!",
+//             required:"Enter Email!"
+//             },
+//         mobile:{minlength:"Please enter Valid Mobile No.",
+//             required:"Please enter Mobile No."
+//             },
+//     },
+    
+//     submitHandler: function(form){
+//         console.log('hello');
+//     $.ajax({
+//         url: form.action,
+//         type: form.method,
+//         data: $(form).serialize(),
+//         success: function(response) {
+//             $('#answers').html(response);
+//         }            
+//           });		
+//     }
+//     });

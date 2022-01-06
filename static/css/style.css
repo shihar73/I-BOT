@@ -2,6 +2,7 @@ body {
     font-family: Helvetica, sans-serif;
     background: linear-gradient(rgb(178, 178, 180), transparent), linear-gradient(to top left, rgb(171, 199, 206), transparent), linear-gradient(to top right, #a1a1a1, transparent);
     background-blend-mode: screen;
+    font-size: 16px;
 }
 
 .logo {
@@ -163,7 +164,7 @@ body {
 .first_section{
     float: left;
     width: 50%;
-    padding: 10rem;
+    padding: 4rem;
 }
 
 .second_section{
@@ -244,6 +245,28 @@ body {
     box-shadow: none;
     opacity: .5;
 }
+
+.bootstrap-tagsinput .tag {
+    margin-right: 2px;
+    color: #fff;
+    background-color: #3168bdde;
+    font-size: 1rem;
+}
+.bootstrap-tagsinput {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    display: inline-block;
+    padding: 4px 6px;
+    color: #555;
+    vertical-align: middle;
+    border-radius: 4px;
+    max-width: 100%;
+    line-height: 22px;
+    cursor: text;
+    width: 70%;
+}
+
 @keyframes button-loading-spinner {
     from {
       transform: rotate(0turn);
@@ -257,6 +280,8 @@ body {
 
 
 
+
+  
 /* mobile style */
 @media only screen and (max-width: 810px) {
     .login_section{
@@ -343,5 +368,11 @@ body {
     }
     .tags {
         width: 160%;
+    }
+    .bootstrap-tagsinput {
+        width: 100%;
+    }
+    .bootstrap-tagsinput .tag {
+        font-size: .8rem;
     }
   }

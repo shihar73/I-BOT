@@ -55,9 +55,7 @@ def login():
 @app.route('/home')
 @login_required
 def home():
-    print(session)
-    data = session['user']
-    # data['bot'] = True
+    data = db_user.userdata(session['user'])
     return render_template('home.html', data = data)
 
 
@@ -93,6 +91,16 @@ def insatlogin():
         user = session['user']
         db_user.insta_ac_add(insta,user)
         return jsonify(status = True, msg = f"Your {insta_id} insta account has been added successfully")
+
+
+
+@app.route('/data', methods=['POST'])
+@login_required
+def data():
+    tags = request.form["tags"].replace(" ", "")
+    comments = request.form["comments"]
+    print(tags, comments)
+    return jsonify(status = True, msg = f"Your data has been added successfully")
 
 
 
