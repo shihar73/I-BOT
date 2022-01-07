@@ -64,3 +64,30 @@ def update_data(data, user):
     }
     col.update_one(id,data)
     return
+
+def user_full_data(user):
+    data = col.find_one({"_id": user['_id']})
+    return data
+
+def insta_url_add(user,urls):
+    id ={
+        "_id": user['_id']
+    }
+    data = {"$set": {
+        "urls":urls
+    }
+    }
+    col.update_one(id,data)
+    return
+
+
+def bot_run(user):
+    id ={
+        "_id": user['_id']
+    }
+    data = {"$set": {
+        "bot":True
+    }
+    }
+    col.update_one(id,data)
+    return

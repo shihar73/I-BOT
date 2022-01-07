@@ -2,8 +2,13 @@ from logging import fatal
 from flask import *
 from functools import wraps
 from helpers import db_user_querys as db_user
-from insta.bot import Bot
+from insta.bot import Bot 
 from datetime import timedelta
+import _thread
+import time
+import gevent
+
+
 
 
 app = Flask(__name__)
@@ -57,6 +62,7 @@ def login():
 @login_required
 def home():
     data = db_user.userdata(session['user'])
+    print(data)
     return render_template('home.html', data = data)
 
 
@@ -71,14 +77,15 @@ def logout():
 @login_required
 def insatlogin():
 
+    user = session['user']
     insta_id = request.form["instaid"] 
     passwd = request.form["password"]
     insta ={
         "insta_id" : insta_id, 
         "passwd" : passwd
     }
-    bot = Bot(insta_id,passwd)
-    data = bot.login()
+    bot = Bot(user)
+    data = bot.login(insta_id,passwd)
     if data:
         print(data)
         bot.exit()
@@ -89,7 +96,6 @@ def insatlogin():
         session['user']["insta"] = {
         "insta_id" : insta_id
     }
-        user = session['user']
         db_user.insta_ac_add(insta,user)
         return jsonify(status = True, msg = f"Your {insta_id} insta account has been added successfully")
 
@@ -101,9 +107,7 @@ def data():
     data = {}
     data["tags"] = request.form["tags"].replace(" ", "").split(",")
     data["comments"] = request.form["comments"].split(",")
-    print(len(data["tags"]), len(data["comments"]))
     if len(data["tags"]) >= 5 and len(data["comments"]) >= 5:
-        print('add in database')
         db_user.update_data(data, session['user'])
         return jsonify(status = True, msg = f"Your data has been added successfully")
     else:
@@ -114,11 +118,20 @@ def data():
 @app.route('/activate', methods=['POST'])
 @login_required
 def activate():
+    @copy_current_request_context
+    def run_bot():
+        b = Bot(session['user'])
+        b.printb()
+
     if session['user']['insta_ac']:
+        session['user']['bot'] = True
+        db_user.bot_run(session['user'])
+        _thread.start_new_thread(run_bot, ())
         return jsonify(status = True, msg = f"Bot Activated seccessfully")
         
     else:
         return jsonify(status = False, msg = f"Please Add an Instagram account")
+
 
 
 

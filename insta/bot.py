@@ -13,47 +13,57 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.firefox.options import Options
 # from webdriver_manager.firefox import GeckoDriverManager 
+from helpers import db_user_querys as db_user
+import schedule
+
+
 
 class Bot:
-    def __init__(self, username, password):
+    def __init__(self, user):
+        if user['insta_ac']:
+            self.data = db_user.user_full_data(user)
+            self.username = self.data['insta']['insta_id']
+            self.password = self.data['insta']['passwd']
 
-        self.username = username
-        self.password = password
-
-        # options = Options()
-        # options.add_argument("-headless")
+        options = Options()
+        options.headless = False
 
         user_agent = "Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16"
         profile = webdriver.FirefoxProfile()
         profile.set_preference("general.useragent.override", user_agent)
 
         # self.bot = webdriver.Firefox(profile, executable_path=GM().install())
-        self.bot = webdriver.Firefox(firefox_profile=profile)
-        # self.bot = webdriver.Firefox(firefox_profile=profile, firefox_options=options)
+        self.bot = webdriver.Firefox(firefox_profile=profile, options=options)
         self.bot.set_window_size(500, 950)
 
-        # with open(r'tags.txt', 'r') as f:
-        #     tagsl = [line.strip() for line in f]
 
-        # with open(r'url.txt', 'r') as f:
-        #     data = f.read()
-        #     urllist = [j.strip(" '") for j in [i.strip("'") for i in list(data.split(','))]]
-        #     print(urllist)
+        self.tags = self.data['tags']
+        self.tagsln = 180//len(self.data['tags'])
+        print('len(tagsl)', self.tagsln)
+        try:
+            if self.data['urls']:
+                self.turls = self.data['urls']
+            print(self.turls)
+        except:
+            self.turls = []
+            print('no urls')
 
-        # self.tags = tagsl
-        # self.tagsln = 180//len(tagsl)
-        # print('len(tagsl)', self.tagsln)
-        self.urls = []
         self.tpost = 0
-        # self.turls = urllist
+        self.urls = []
         self.loginbtn = ''
+        self.exit()
 
     def exit(self):
         bot = self.bot
         bot.quit()
         print('bot.quit()')
 
-    def login(self):
+    def login(self,username = None, password = None):
+        if username and password:
+            self.username = username
+            self.password = password
+        
+        print(self.username,self.password)
         bot = self.bot
         bot.get('https://instagram.com/')
         time.sleep(3)
@@ -100,16 +110,15 @@ class Bot:
             self.loginbtn = "//a[text()='Log in']"
 
             if check_exists_by_xpath(bot, "//a[text()='Log in']"):
-                print("set 3 link")
                 self.loginbtn = "//div[text()='Log In']"
                 
                 if check_exists_by_xpath(bot, "//div[text()='Log In']"):
                     print("recall login")
                     return self.login()
 
-            print("set 2 link")
             
-        print(self.loginbtn)
+            
+        
         bot.find_element_by_xpath(
             self.loginbtn).click()
         time.sleep(5)
@@ -124,15 +133,160 @@ class Bot:
             
             return error
 
-        # bot.get('https://instagram.com/')
         if bot.title == "Login • Instagram":
-            print(bot.title)
             error = "Login is not completed"
             return error
-            
+
+        print(bot.title)  
+        time.sleep(3)
+        bot.get('https://www.instagram.com/explore/tags/insta')
+        if check_exists_by_xpath(bot, "//a[contains(@class,'ablfq')]") == False:
+            error = "Login is not completed"
+            return error
+
         return False
 
+    def get_posts(self):
+        print('Searching post by tag...')
+        bot = self.bot
+    
+        tags = self.tags
+        print(tags)
+        if tags == []:
+               print("Finished")
+               self.exit()
+               return
 
+        tag = "tags.pop()$@#%32"
+        link = 'https://www.instagram.com/explore/tags/' + tag
+        bot.get(link)
+        
+        if check_exists_by_xpath(bot, "//a[contains(@class,'ablfq')]") == False:
+            print("set 3 error")
+            self.login()
+            return self.get_posts()
+
+        time.sleep(4)
+
+        for i in range(10):
+            ActionChains(bot).send_keys(Keys.END).perform()
+            time.sleep(2)
+
+        divs = bot.find_elements_by_xpath("//a[@href]")
+        first_urls = []
+
+        for i in divs:
+            if i.get_attribute('href') != None:
+                first_urls.append(i.get_attribute('href'))
+            else:
+                continue
+        
+        for url in first_urls:
+            if url.startswith('https://www.instagram.com/p/'):
+                if url not in self.turls:
+                    self.urls.append(url)
+
+                print(len(self.urls))
+                if len(self.urls) == self.tagsln:
+                    break
+
+        self.tpost += int(len(self.urls))
+        print('self.totalpost----1',self.tpost)
+        return self.comment(random_comment())
+
+
+    def comment(self, comment):
+        print(len(self.urls))
+       
+        if len(self.urls) == 0:
+            print('Finished tag jumping to next one...')
+            db_user.insta_url_add(self.data, self.turls)
+            time.sleep(600)
+            return self.get_posts()
+            # return run.get_posts()
+
+        bot = self.bot
+        url = self.urls.pop()
+
+        print(f'Geting post : {url}')
+        bot.get(url)
+        bot.implicitly_wait(1)
+
+        bot.execute_script("window.scrollTo(0, window.scrollY + 300)")
+        time.sleep(3)
+
+        bot.find_element_by_xpath(
+            "//span[contains(@class,'fr66n')]/button").click()
+        time.sleep(3)
+        print('liked......!')
+
+        if check_exists_by_xpath(bot, "//span[contains(@class,'_15y0l')]/button"):
+           print("skiped 1")
+           return self.comment(random_comment())
+
+        bot.find_element_by_xpath(
+            "//span[contains(@class,'_15y0l')]/button").click()
+
+        time.sleep(3)
+        if check_exists_by_xpath(bot, "//form/textarea"):
+            print("skiped 2")
+            return self.comment(random_comment())
+
+        time.sleep(3)
+        bot.find_element_by_xpath(
+            "//form/textarea").click()
+       
+        self.turls.append(url)
+        print(self.turls)
+        time.sleep(3)
+        find_comment_box = (
+            By.XPATH, '//textarea[@Placeholder = "Add a comment…"]')
+        WebDriverWait(bot, 50).until(
+            EC.presence_of_element_located(find_comment_box))
+        comment_box = bot.find_element(*find_comment_box)
+        WebDriverWait(bot, 50).until(
+            EC.element_to_be_clickable(find_comment_box))
+        comment_box.click()
+        time.sleep(10)
+        comment_box.send_keys(comment)
+
+        print('commenting...')
+
+        find_post_button = (
+            By.XPATH, "//button[text()='Post']")
+        WebDriverWait(bot, 50).until(
+            EC.presence_of_element_located(find_post_button))
+        post_button = bot.find_element(*find_post_button)
+        WebDriverWait(bot, 50).until(
+            EC.element_to_be_clickable(find_post_button))
+        post_button.click()
+        # edit this line to make bot faster
+        time.sleep(60)
+        # ---------------------------------
+
+        return self.comment(random_comment())
+    def dojob(self):
+        self.data = db_user.user_full_data(self.data)
+        print('===================================================')
+        print('===================================================')
+        print('===================================================')
+        print('===================================================')
+
+
+    def printb(self):
+        # schedule.every(15).seconds.do(self.dojob)
+        schedule.every().day.at("17:35").do(self.dojob)
+        while self.data['bot']:
+            schedule.run_pending()
+            time.sleep(1)
+
+
+
+
+def random_comment():
+    comments = {}
+    comment = random.choice(comments)
+    return comment
  
 
 def check_exists_by_xpath(driver, xpath):
@@ -142,3 +296,5 @@ def check_exists_by_xpath(driver, xpath):
         return True
 
     return False
+
+
