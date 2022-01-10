@@ -26,14 +26,13 @@ class Bot:
             self.password = self.data['insta']['passwd']
 
         options = Options()
-        options.headless = False
+        options.headless = True
 
         user_agent = "Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16"
-        profile = webdriver.FirefoxProfile()
-        profile.set_preference("general.useragent.override", user_agent)
+        options.set_preference("general.useragent.override", user_agent)
 
         # self.bot = webdriver.Firefox(profile, executable_path=GM().install())
-        self.bot = webdriver.Firefox(firefox_profile=profile, options=options)
+        self.bot = webdriver.Firefox(options=options)
         self.bot.set_window_size(500, 950)
 
 
@@ -52,7 +51,6 @@ class Bot:
         self.urls = []
         self.loginbtn = ''
         self.comments =  self.data['comments']
-        self.exit()
 
     def exit(self):
         bot = self.bot
@@ -72,13 +70,13 @@ class Bot:
            print("skiped 1")
            return self.login()
 
-        bot.find_element_by_xpath("//button[text()='Log In']").click()
+        bot.find_element(By.XPATH, "//button[text()='Log In']").click()
         time.sleep(5)
 
         if check_exists_by_xpath(bot, "//button[text()='Accept']"):
             print("No cookies")
         else:
-            bot.find_element_by_xpath("//button[text()='Accept']").click()
+            bot.find_element(By.XPATH, "//button[text()='Accept']").click()
             print("Accepted cookies")
 
         time.sleep(4)
@@ -88,8 +86,8 @@ class Bot:
            print("skiped 1")
            return self.login()
 
-        username_field = bot.find_element_by_xpath(
-            "//input[@name='username']")
+        username_field = bot.find_element(
+            By.XPATH, "//input[@name='username']")
         username_field.send_keys(self.username)
 
         if check_exists_by_xpath(bot, "//input[@name='password']"):
@@ -120,25 +118,25 @@ class Bot:
             
             
         
-        bot.find_element_by_xpath(
-            self.loginbtn).click()
+        bot.find_element(
+            By.XPATH, self.loginbtn).click()
         time.sleep(5)
         if check_exists_by_xpath(bot, "//button[contains(@class,'aOOlW  bIiDR  ')]") == False:
             print("login error")
-            error = bot.find_element_by_xpath("//h3[contains(@class,'_7UhW9     LjQVu     qyrsm KV-D4          uL8Hv         ')]").text
+            error = bot.find_element(By.XPATH, "//h3[contains(@class,'_7UhW9     LjQVu     qyrsm KV-D4          uL8Hv         ')]").text
             return error 
 
         if check_exists_by_xpath(bot, "//p[@id='slfErrorAlert']") == False:
             print("login error")
-            error = bot.find_element_by_xpath("//p[@id='slfErrorAlert']").text
+            error = bot.find_element(By.XPATH, "//p[@id='slfErrorAlert']").text
             
             return error
 
         if bot.title == "Login • Instagram":
             error = "Login is not completed"
+            print(bot.title)  
             return error
 
-        print(bot.title)  
         time.sleep(3)
         bot.get('https://www.instagram.com/explore/tags/insta')
         if check_exists_by_xpath(bot, "//a[contains(@class,'ablfq')]") == False:
@@ -158,7 +156,7 @@ class Bot:
                self.exit()
                return
 
-        tag = "tags.pop()$@#%32"
+        tag = tags.pop()
         link = 'https://www.instagram.com/explore/tags/' + tag
         bot.get(link)
         
@@ -173,7 +171,7 @@ class Bot:
             ActionChains(bot).send_keys(Keys.END).perform()
             time.sleep(2)
 
-        divs = bot.find_elements_by_xpath("//a[@href]")
+        divs = bot.find_elements(By.XPATH, "//a[@href]")
         first_urls = []
 
         for i in divs:
@@ -201,7 +199,7 @@ class Bot:
        
         if len(self.urls) == 0:
             print('Finished tag jumping to next one...')
-            db_user.insta_url_add(self.data, self.turls)
+            
             time.sleep(600)
             return self.get_posts()
             # return run.get_posts()
@@ -216,8 +214,12 @@ class Bot:
         bot.execute_script("window.scrollTo(0, window.scrollY + 300)")
         time.sleep(3)
 
-        bot.find_element_by_xpath(
-            "//span[contains(@class,'fr66n')]/button").click()
+        if check_exists_by_xpath(bot, "//span[contains(@class,'fr66n')]/button"):
+           print("skiped 0")
+           return self.comment(random_comment(self.comments))
+
+        bot.find_element(
+            By.XPATH, "//span[contains(@class,'fr66n')]/button").click()
         time.sleep(3)
         print('liked......!')
 
@@ -225,8 +227,8 @@ class Bot:
            print("skiped 1")
            return self.comment(random_comment(self.comments))
 
-        bot.find_element_by_xpath(
-            "//span[contains(@class,'_15y0l')]/button").click()
+        bot.find_element(
+            By.XPATH, "//span[contains(@class,'_15y0l')]/button").click()
 
         time.sleep(3)
         if check_exists_by_xpath(bot, "//form/textarea"):
@@ -234,10 +236,11 @@ class Bot:
             return self.comment(random_comment(self.comments))
 
         time.sleep(3)
-        bot.find_element_by_xpath(
-            "//form/textarea").click()
+        bot.find_element(
+            By.XPATH, "//form/textarea").click()
        
         self.turls.append(url)
+        db_user.insta_url_add(self.data, self.turls)
         print(self.turls)
         time.sleep(3)
         find_comment_box = (
@@ -269,22 +272,25 @@ class Bot:
 
 
     def do_job(self):
-        self.data = db_user.user_full_data(self.data)
-        print('===================================================')
-        print('===================================================')
-        self.login()
-        self.get_posts()
-        # self.exit()
-        return
+        try:
+            self.data = db_user.user_full_data(self.data)
+            print('===================================================')
+            self.login()
+            self.get_posts()
+            self.exit()
+            return
+        except:
+            db_user.bot_run_fail(self.data)
+            print("error do_job")
+            return
 
 
-    def printb(self):
+    def run_bot(self):
         # schedule.every(15).seconds.do(self.dojob)
-        # schedule.every().day.at("12:35").do(self.do_job)
-        # while self.data['bot']:
-        #     schedule.run_pending()
-        #     time.sleep(1)
-        self.do_job()
+        schedule.every().day.at("14:35").do(self.do_job)
+        while self.data['bot']:
+            schedule.run_pending()
+            time.sleep(1)
 
 
 
@@ -296,7 +302,7 @@ def random_comment(comments):
 
 def check_exists_by_xpath(driver, xpath):
     try:
-        driver.find_element_by_xpath(xpath)
+        driver.find_element(By.XPATH, xpath)
     except NoSuchElementException:
         return True
 

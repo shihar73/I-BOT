@@ -75,7 +75,7 @@ def logout():
 
 @app.route('/instalogin', methods=['POST'])
 @login_required
-def insatlogin():
+def instalogin():
 
     user = session['user']
     insta_id = request.form["instaid"] 
@@ -84,20 +84,26 @@ def insatlogin():
         "insta_id" : insta_id, 
         "passwd" : passwd
     }
-    bot = Bot(user)
-    data = bot.login(insta_id,passwd)
-    if data:
-        print(data)
+    try:
+        bot = Bot(user)
+        data = bot.login(insta_id,passwd)
+
+        if data:
+            print(data)
+            bot.exit()
+            return jsonify(status = False, msg = data)
+        else:
+            bot.exit()
+            session['user']["insat_ac"] = True
+            session['user']["insta"] = {
+            "insta_id" : insta_id
+        }
+            db_user.insta_ac_add(insta,user)
+            return jsonify(status = True, msg = f"Your {insta_id} insta account has been added successfully")
+    except:
+        print("error insat login")
         bot.exit()
-        return jsonify(status = False, msg = data)
-    else:
-        bot.exit()
-        session['user']["insat_ac"] = True
-        session['user']["insta"] = {
-        "insta_id" : insta_id
-    }
-        db_user.insta_ac_add(insta,user)
-        return jsonify(status = True, msg = f"Your {insta_id} insta account has been added successfully")
+        return jsonify(status = False, msg = f"Something is wrong contact admin.")
 
 
 
@@ -121,7 +127,7 @@ def activate():
     @copy_current_request_context
     def run_bot():
         b = Bot(session['user'])
-        b.printb()
+        b.run_bot()
 
     if session['user']['insta_ac']:
         session['user']['bot'] = True

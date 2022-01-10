@@ -91,3 +91,14 @@ def bot_run(user):
     }
     col.update_one(id,data)
     return
+
+def bot_run_fail(user):
+    id ={
+        "_id": user['_id']
+    }
+    data = {"$set": {
+        "bot":False
+    }
+    }
+    col.update_one(id,data)
+    return
