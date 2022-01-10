@@ -12,6 +12,9 @@ h5{
     font-weight: 600;
     letter-spacing: 0.055em;
 }
+p{
+    margin: 0;
+}
 
 .logo {
     width: 100%;

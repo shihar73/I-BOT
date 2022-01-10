@@ -51,6 +51,7 @@ class Bot:
         self.tpost = 0
         self.urls = []
         self.loginbtn = ''
+        self.comments =  self.data['comments']
         self.exit()
 
     def exit(self):
@@ -192,7 +193,7 @@ class Bot:
 
         self.tpost += int(len(self.urls))
         print('self.totalpost----1',self.tpost)
-        return self.comment(random_comment())
+        return self.comment(random_comment(self.comments))
 
 
     def comment(self, comment):
@@ -222,7 +223,7 @@ class Bot:
 
         if check_exists_by_xpath(bot, "//span[contains(@class,'_15y0l')]/button"):
            print("skiped 1")
-           return self.comment(random_comment())
+           return self.comment(random_comment(self.comments))
 
         bot.find_element_by_xpath(
             "//span[contains(@class,'_15y0l')]/button").click()
@@ -230,7 +231,7 @@ class Bot:
         time.sleep(3)
         if check_exists_by_xpath(bot, "//form/textarea"):
             print("skiped 2")
-            return self.comment(random_comment())
+            return self.comment(random_comment(self.comments))
 
         time.sleep(3)
         bot.find_element_by_xpath(
@@ -264,27 +265,31 @@ class Bot:
         time.sleep(60)
         # ---------------------------------
 
-        return self.comment(random_comment())
-    def dojob(self):
+        return self.comment(random_comment(self.comments))
+
+
+    def do_job(self):
         self.data = db_user.user_full_data(self.data)
         print('===================================================')
         print('===================================================')
-        print('===================================================')
-        print('===================================================')
+        self.login()
+        self.get_posts()
+        # self.exit()
+        return
 
 
     def printb(self):
         # schedule.every(15).seconds.do(self.dojob)
-        schedule.every().day.at("17:35").do(self.dojob)
-        while self.data['bot']:
-            schedule.run_pending()
-            time.sleep(1)
+        # schedule.every().day.at("12:35").do(self.do_job)
+        # while self.data['bot']:
+        #     schedule.run_pending()
+        #     time.sleep(1)
+        self.do_job()
 
 
 
 
-def random_comment():
-    comments = {}
+def random_comment(comments):
     comment = random.choice(comments)
     return comment
  
