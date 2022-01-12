@@ -84,8 +84,8 @@ def instalogin():
         "insta_id" : insta_id, 
         "passwd" : passwd
     }
+    bot = Bot(user)
     try:
-        bot = Bot(user)
         data = bot.login(insta_id,passwd)
 
         if data:

@@ -12,9 +12,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.firefox.options import Options
-# from webdriver_manager.firefox import GeckoDriverManager 
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from helpers import db_user_querys as db_user
 import schedule
+from datetime import datetime
 
 
 
@@ -24,15 +25,19 @@ class Bot:
             self.data = db_user.user_full_data(user)
             self.username = self.data['insta']['insta_id']
             self.password = self.data['insta']['passwd']
-
+        else:
+            self.data = user
+            
         options = Options()
         options.headless = True
-
+        options.add_argument("-disable-gpu")
+        options.add_argument("-no-sandbox")
         user_agent = "Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16"
         options.set_preference("general.useragent.override", user_agent)
+        binary = FirefoxBinary(os.environ.get('FIREFOX_BIN'))
 
-        # self.bot = webdriver.Firefox(profile, executable_path=GM().install())
-        self.bot = webdriver.Firefox(options=options)
+
+        self.bot = webdriver.Firefox(options=options, firefox_binary=binary,executable_path=os.environ.get('GECKODRIVER_PATH'))
         self.bot.set_window_size(500, 950)
 
 
@@ -48,6 +53,7 @@ class Bot:
             print('no urls')
 
         self.tpost = 0
+        self.todaylinks = []
         self.urls = []
         self.loginbtn = ''
         self.comments =  self.data['comments']
@@ -240,7 +246,8 @@ class Bot:
             By.XPATH, "//form/textarea").click()
        
         self.turls.append(url)
-        db_user.insta_url_add(self.data, self.turls)
+        self.todaylinks.append(url)
+        db_user.insta_url_add(self.data, [self.turls,self.todaylinks])
         print(self.turls)
         time.sleep(3)
         find_comment_box = (
@@ -272,26 +279,69 @@ class Bot:
 
 
     def do_job(self):
-        try:
-            self.data = db_user.user_full_data(self.data)
-            print('===================================================')
-            self.login()
-            self.get_posts()
-            self.exit()
-            return
-        except:
-            db_user.bot_run_fail(self.data)
-            print("error do_job")
-            return
+        x = datetime.now()
+        status = True
+        days = days_between(self.data['start_date'], x.strftime("%d-%m-%Y"))
+        if days > 30:
+            print("date ended")
+            status = False
+            self.data['status'] = False
+            self.data['bot'] = False
+            db_user.time_out(self.data)
+        elif days == 0:
+            status = False
+        
+        if status:
+            try:
+                self.data = db_user.user_full_data(self.data)
+                try:
+                    if self.data['t-date']:
+                        self.data['t-date'].append(x.strftime("%d-%m-%Y"))
+                except:
+                    self.data['t-date'] = [x.strftime("%d-%m-%Y")]
+                    print('no t-date')
+
+                db_user.set_date(self.data)
+                self.login()
+                self.get_posts()
+                self.exit()
+                return
+            except:
+                db_user.bot_run_fail(self.data)
+                print("error do_job")
+                return
 
 
     def run_bot(self):
-        # schedule.every(15).seconds.do(self.dojob)
-        schedule.every().day.at("14:35").do(self.do_job)
+        x = datetime.now()
+        status = True
+        try:
+            if self.data['start_date']:
+                pass
+
+        except:
+            self.data['start_date'] = x.strftime("%d-%m-%Y")
+            try:
+                if self.data['t-date']:
+                    self.data['t-date'].append(x.strftime("%d-%m-%Y"))
+            except:
+                self.data['t-date'] = [x.strftime("%d-%m-%Y")]
+                print('no t-date')
+
+            db_user.set_date(self.data)
+            try:
+                self.login()
+                self.get_posts()
+                self.exit()
+            except:
+                db_user.bot_run_fail(self.data)
+                print("error do_job")
+
+
+        schedule.every().day.at("13:24").do(self.do_job)
         while self.data['bot']:
             schedule.run_pending()
             time.sleep(1)
-
 
 
 
@@ -309,3 +359,7 @@ def check_exists_by_xpath(driver, xpath):
     return False
 
 
+def days_between(d1, d2):
+    d1 = datetime.strptime(d1, "%d-%m-%Y")
+    d2 = datetime.strptime(d2, "%d-%m-%Y")
+    return abs((d2 - d1).days)

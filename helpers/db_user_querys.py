@@ -69,12 +69,13 @@ def user_full_data(user):
     data = col.find_one({"_id": user['_id']})
     return data
 
-def insta_url_add(user,urls):
+def insta_url_add(user,data):
     id ={
         "_id": user['_id']
     }
     data = {"$set": {
-        "urls":urls
+        "urls":data[0],
+        "todaylinks":data[1]
     }
     }
     col.update_one(id,data)
@@ -97,7 +98,43 @@ def bot_run_fail(user):
         "_id": user['_id']
     }
     data = {"$set": {
-        "bot":False
+        "bot":False,
+        'error':"bot running stopped"
+    }
+    }
+    col.update_one(id,data)
+    return
+
+def set_date(data):
+    id ={
+        "_id": data['_id']
+    }
+    data = {"$set": {
+        "t-date": data['t-date']
+    }
+    }
+    col.update_one(id,data)
+    return
+
+
+def add_start_date(user):
+    id ={
+        "_id": user['_id']
+    }
+    data = {"$set": {
+        "start_date": user['start_date']
+    }
+    }
+    col.update_one(id,data)
+    return
+
+def time_out(user):
+    id ={
+        "_id": user['_id']
+    }
+    data = {"$set": {
+        "status": False,
+        "bot": False
     }
     }
     col.update_one(id,data)

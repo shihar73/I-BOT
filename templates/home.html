@@ -5,30 +5,9 @@
     <button onclick="myFunctionLogs()" class="dropbtn dropbtn_logs">Logs</button>
     <div id="myDropdown_logs" class="dropdown-content dropdown-content_logs">
         <div class="log_div">
-            <p>ljdnfgjsnsjfosnfuosifj <a>show</a></p>
-            <p>ljdnfgjsnsjfo</p>
-            <p>ljdnfgjsnsjfosnfuosifj <a>show</a></p>
-            <p>ljdnfgjsnsjfo</p>
-            <p>ljdnfgjsnsjfosnfuosifj <a>show</a></p>
-            <p>ljdnfgjsnsjfo</p>
-            <p>ljdnfgjsnsjfosnfuosifj <a>show</a></p>
-            <p>ljdnfgjsnsjfo</p>
-            <p>ljdnfgjsnsjfosnfuosifj <a>show</a></p>
-            <p>ljdnfgjsnsjfo</p>
-            <p>ljdnfgjsnsjfosnfuosifj <a>show</a></p>
-            <p>ljdnfgjsnsjfo</p>
-            <p>ljdnfgjsnsjfosnfuosifj <a>show</a></p>
-            <p>ljdnfgjsnsjfo</p>
-            <p>ljdnfgjsnsjfosnfuosifj <a>show</a></p>
-            <p>ljdnfgjsnsjfo</p>
-            <p>ljdnfgjsnsjfosnfuosifj <a>show</a></p>
-            <p>ljdnfgjsnsjfo</p>
-            <p>ljdnfgjsnsjfosnfuosifj <a>show</a></p>
-            <p>ljdnfgjsnsjfo</p>
-            <p>ljdnfgjsnsjfosnfuosifj <a>show</a></p>
-            <p>ljdnfgjsnsjfo</p>
-            <p>ljdnfgjsnsjfosnfuosifj <a>show</a></p>
-            <p>ljdnfgjsnsjfo</p>
+            {% for i in data.todaylinks %}
+            <p>Commented Post <a href="{{i}}">show</a></p>
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -134,7 +113,7 @@
                 <form id="activate" class="container has-text-centered">
                     <p>Please activate your bot. If the button disabled the bot already activated</p>
                     {% if data.bot %}
-                    <button  class="button btnactivate" disabled >Activated</button>
+                    <button class="button btnactivate" disabled>Activated</button>
                     {% else %}
                     <button id="activate_btn" class="button btnactivate">Activate</button>
                     {% endif %}
