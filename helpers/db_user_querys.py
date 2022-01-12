@@ -1,9 +1,12 @@
 from flask import jsonify
+from datetime import datetime
 from helpers.db_config import db
 from helpers.collections import user_col
 
 
 col = db[user_col]
+
+x = datetime.now()  
 
 def login(user, passwd):
     login_status = {
@@ -75,7 +78,10 @@ def insta_url_add(user,data):
     }
     data = {"$set": {
         "urls":data[0],
-        "todaylinks":data[1]
+        "todaylinks":data[1],
+        "t-date":{
+            x.strftime("%d-%m-%Y"):len(data[1])
+        }
     }
     }
     col.update_one(id,data)
@@ -99,7 +105,7 @@ def bot_run_fail(user):
     }
     data = {"$set": {
         "bot":False,
-        'error':"bot running stopped"
+        'error': f"bot running stopped on {x.strftime('%d-%m-%Y')}"
     }
     }
     col.update_one(id,data)

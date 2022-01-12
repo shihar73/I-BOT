@@ -206,7 +206,7 @@ class Bot:
         if len(self.urls) == 0:
             print('Finished tag jumping to next one...')
             
-            time.sleep(600)
+            time.sleep(3000)
             return self.get_posts()
             # return run.get_posts()
 
@@ -241,7 +241,7 @@ class Bot:
             print("skiped 2")
             return self.comment(random_comment(self.comments))
 
-        time.sleep(3)
+        time.sleep(4)
         bot.find_element(
             By.XPATH, "//form/textarea").click()
        
@@ -249,7 +249,7 @@ class Bot:
         self.todaylinks.append(url)
         db_user.insta_url_add(self.data, [self.turls,self.todaylinks])
         print(self.turls)
-        time.sleep(3)
+        time.sleep(4)
         find_comment_box = (
             By.XPATH, '//textarea[@Placeholder = "Add a comment…"]')
         WebDriverWait(bot, 50).until(
@@ -272,7 +272,7 @@ class Bot:
             EC.element_to_be_clickable(find_post_button))
         post_button.click()
         # edit this line to make bot faster
-        time.sleep(60)
+        time.sleep(120)
         # ---------------------------------
 
         return self.comment(random_comment(self.comments))
@@ -296,9 +296,9 @@ class Bot:
                 self.data = db_user.user_full_data(self.data)
                 try:
                     if self.data['t-date']:
-                        self.data['t-date'].append(x.strftime("%d-%m-%Y"))
+                        self.data['t-date'][x.strftime("%d-%m-%Y")] = 0
                 except:
-                    self.data['t-date'] = [x.strftime("%d-%m-%Y")]
+                    self.data['t-date'] = {x.strftime("%d-%m-%Y"):0}
                     print('no t-date')
 
                 db_user.set_date(self.data)
@@ -321,11 +321,12 @@ class Bot:
 
         except:
             self.data['start_date'] = x.strftime("%d-%m-%Y")
+            db_user.add_start_date(self.data)
             try:
                 if self.data['t-date']:
-                    self.data['t-date'].append(x.strftime("%d-%m-%Y"))
+                    self.data['t-date'][x.strftime("%d-%m-%Y")] = 0
             except:
-                self.data['t-date'] = [x.strftime("%d-%m-%Y")]
+                self.data['t-date'] = {x.strftime("%d-%m-%Y"):0}
                 print('no t-date')
 
             db_user.set_date(self.data)
@@ -338,7 +339,7 @@ class Bot:
                 print("error do_job")
 
 
-        schedule.every().day.at("13:24").do(self.do_job)
+        schedule.every().day.at("1:30").do(self.do_job)
         while self.data['bot']:
             schedule.run_pending()
             time.sleep(1)
