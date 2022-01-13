@@ -73,15 +73,15 @@ def user_full_data(user):
     return data
 
 def insta_url_add(user,data):
+
+    user['t-date'][x.strftime("%d-%m-%Y")] = len(data[1])
     id ={
         "_id": user['_id']
     }
     data = {"$set": {
         "urls":data[0],
         "todaylinks":data[1],
-        "t-date":{
-            x.strftime("%d-%m-%Y"):len(data[1])
-        }
+        "t-date":user['t-date']
     }
     }
     col.update_one(id,data)
@@ -104,7 +104,6 @@ def bot_run_fail(user):
         "_id": user['_id']
     }
     data = {"$set": {
-        "bot":False,
         'error': f"bot running stopped on {x.strftime('%d-%m-%Y')}"
     }
     }

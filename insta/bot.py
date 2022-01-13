@@ -339,7 +339,7 @@ class Bot:
                 print("error do_job")
 
 
-        schedule.every().day.at("1:30").do(self.do_job)
+        schedule.every().day.at("01:30").do(self.do_job)
         while self.data['bot']:
             schedule.run_pending()
             time.sleep(1)
