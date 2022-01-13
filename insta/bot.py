@@ -16,8 +16,10 @@ from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from helpers import db_user_querys as db_user
 import schedule
 from datetime import datetime
+from pyvirtualdisplay import Display
 
  
+
 
 class Bot:
     def __init__(self, user):
@@ -27,7 +29,8 @@ class Bot:
             self.password = self.data['insta']['passwd']
         else:
             self.data = user
-            
+        display = Display(visible=0, size=(500, 950))
+        display.start()  
         options = Options()
         options.headless = True
         options.add_argument("-no-sandbox")
