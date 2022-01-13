@@ -84,7 +84,9 @@ def instalogin():
         "insta_id" : insta_id, 
         "passwd" : passwd
     }
+    print('Bot starting')
     bot = Bot(user)
+    print('Bot started seccessfully')
     try:
         data = bot.login(insta_id,passwd)
 
