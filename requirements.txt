@@ -39,5 +39,6 @@ urllib3==1.26.7
 webdriver-manager==3.5.2
 Werkzeug==2.0.2
 wsproto==1.0.0
+xvfbwrapper==0.2.9
 zope.event==4.5.0
 zope.interface==5.4.0
