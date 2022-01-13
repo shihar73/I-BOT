@@ -12,7 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+from webdriver_manager.firefox import GeckoDriverManager
 from helpers import db_user_querys as db_user
 import schedule
 from datetime import datetime
@@ -36,7 +36,7 @@ class Bot:
         options.set_preference("general.useragent.override", user_agent)
 
 
-        self.bot = webdriver.Firefox(options=options)
+        self.bot = webdriver.Firefox(options=options,executable_path=GeckoDriverManager().install())
         self.bot.set_window_size(500, 950)
 
 
