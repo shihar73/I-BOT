@@ -34,9 +34,9 @@ class Bot:
         options.add_argument("-no-sandbox")
         user_agent = "Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16"
         options.set_preference("general.useragent.override", user_agent)
+        GM().install()
 
-
-        self.bot = webdriver.Firefox(options=options,executable_path=GM().install())
+        self.bot = webdriver.Firefox(options=options,executable_path=os.environ.get("GECKODRIVER_PATH"))
         self.bot.set_window_size(500, 950)
 
 
