@@ -12,7 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.firefox.options import Options
-from webdriver_manager.firefox import GeckoDriverManager as GM
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from helpers import db_user_querys as db_user
 import schedule
 from datetime import datetime
@@ -30,13 +30,11 @@ class Bot:
             
         options = Options()
         options.headless = True
-        options.add_argument("-disable-gpu")
         options.add_argument("-no-sandbox")
         user_agent = "Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16"
         options.set_preference("general.useragent.override", user_agent)
-        GM().install()
 
-        self.bot = webdriver.Firefox(options=options,executable_path=os.environ.get("GECKODRIVER_PATH"))
+        self.bot = webdriver.Firefox(options=options,executable_path=os.environ.get("GECKODRIVER_PATH"), firefox_binary=FirefoxBinary(os.environ.get("FIREFOX_BIN")))
         self.bot.set_window_size(500, 950)
 
 
