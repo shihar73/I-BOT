@@ -14,7 +14,6 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.firefox.options import Options
 from webdriver_manager.firefox import GeckoDriverManager
 from helpers import db_user_querys as db_user
-from pyvirtualdisplay import Display
 import schedule
 from datetime import datetime
  
@@ -30,8 +29,6 @@ class Bot:
         else:
             self.data = user
 
-        display = Display(visible=0, size=(1024, 768))
-        display.start()
         
         options = Options()
         options.headless = True
@@ -76,10 +73,9 @@ class Bot:
         time.sleep(3)
         if check_exists_by_xpath(bot, "//button[text()='Log In']"):
            print("skiped 1")
-           return self.login()
-
-        bot.find_element(By.XPATH, "//button[text()='Log In']").click()
-        time.sleep(5)
+        else:
+            bot.find_element(By.XPATH, "//button[text()='Log In']").click()
+            time.sleep(5)
 
         if check_exists_by_xpath(bot, "//button[text()='Accept']"):
             print("No cookies")
@@ -130,12 +126,12 @@ class Bot:
             By.XPATH, self.loginbtn).click()
         time.sleep(5)
         if check_exists_by_xpath(bot, "//button[contains(@class,'aOOlW  bIiDR  ')]") == False:
-            print("login error")
+            print("login error 11")
             error = bot.find_element(By.XPATH, "//h3[contains(@class,'_7UhW9     LjQVu     qyrsm KV-D4          uL8Hv         ')]").text
             return error 
 
         if check_exists_by_xpath(bot, "//p[@id='slfErrorAlert']") == False:
-            print("login error")
+            print("login error 12")
             error = bot.find_element(By.XPATH, "//p[@id='slfErrorAlert']").text
             
             return error
